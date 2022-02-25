@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel'
+import { babel } from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import vue from 'rollup-plugin-vue'
 import cjs from '@rollup/plugin-commonjs'

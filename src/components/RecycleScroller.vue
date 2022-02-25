@@ -182,6 +182,7 @@ export default {
     this.$_unusedViews = new Map()
     this.$_scrollDirty = false
     this.$_lastUpdateScrollPosition = 0
+    this.$_lastUpdateScrollEndPosition = 0
 
     // In SSR mode, we also prerender the same number of item for the first render
     // to avoir mismatch between server and client templates
@@ -302,8 +303,7 @@ export default {
 
         // Skip update if use hasn't scrolled enough
         if (checkPositionDiff) {
-          let positionDiff = scroll.start - this.$_lastUpdateScrollPosition
-          if (positionDiff < 0) positionDiff = -positionDiff
+          const positionDiff = Math.max(Math.abs(scroll.start - this.$_lastUpdateScrollPosition), Math.abs(scroll.end - this.$_lastUpdateScrollEndPosition))
           if ((itemSize === null && positionDiff < minItemSize) || positionDiff < itemSize) {
             return {
               continuous: true,
@@ -311,6 +311,7 @@ export default {
           }
         }
         this.$_lastUpdateScrollPosition = scroll.start
+        this.$_lastUpdateScrollEndPosition = scroll.end
 
         const buffer = this.buffer
         scroll.start -= buffer
